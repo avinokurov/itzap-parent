@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.itzap</groupId>
+    <artifactId>itzap-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>ITZap Parent</name>
+
+    <modules>
+        <module>itzap-spring</module>
+        <module>itzap-all</module>
+        <module>itzap-checkstyle</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skip.unit.tests>false</skip.unit.tests>
+        <skip.integration.tests>false</skip.integration.tests>
+
+        <junit.version>4.12</junit.version>
+        <slf4j.version>1.7.24</slf4j.version>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <configLocation>checkstyle.xml</configLocation>
+                        <failsOnError>true</failsOnError>
+                        <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                        <outputFile>${basedir}/target/checkstyle/checkstyle-results.xml</outputFile>
+                        <outputFileFormat>xml</outputFileFormat>
+                        <consoleOutput>true</consoleOutput>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.3</version>
+                    <configuration>
+                        <sourcepath>src/main/java/</sourcepath>
+                        <show>public</show>
+                        <failOnError>true</failOnError>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <configuration>
+                        <enableAssertions>true</enableAssertions>
+                        <skipTests>${skip.unit.tests}</skipTests>
+                        <excludes>
+                            <exclude>**/*Steps.java</exclude>
+                            <exclude>**/*IT.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <configuration>
+                        <skipTests>${skip.integration.tests}</skipTests>
+                        <includes>
+                            <include>**/*Steps.java</include>
+                            <include>**/*IT.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.3</version>
+                    <configuration>
+                        <rules>
+                            <rule>
+                                <element>CLASS</element>
+                                <!-- <limits> <limit> <counter>LINE</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>BRANCH</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>INSTRUCTION</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>BRANCH</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>COMPLEXITY</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>METHOD</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> <limit> <counter>CLASS</counter> <value>COVEREDRATIO</value>
+                                    <minimum>0.80</minimum> </limit> </limits> -->
+                            </rule>
+                        </rules>
+                        <excludes>
+                        </excludes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>
